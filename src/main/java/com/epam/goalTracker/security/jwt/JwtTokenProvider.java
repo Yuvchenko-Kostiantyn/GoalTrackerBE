@@ -50,9 +50,9 @@ public class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    public String createToken(String username, List<RoleEntity> roles) {
+    public String createToken(String email, List<RoleEntity> roles) {
 
-        Claims claims = Jwts.claims().setSubject(username);
+        Claims claims = Jwts.claims().setSubject(email);
         claims.put("roles", getRoleNames(roles));
 
         Date now = new Date();
@@ -87,7 +87,7 @@ public class JwtTokenProvider {
         System.out.println("Token provide 1 ");
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            JwtTokenBlackListDto jwtTokenBlackListDto = userService.getToken(PREFIX_TOKEN + token);
+            JwtTokenBlackListDto jwtTokenBlackListDto = userService.findToken(PREFIX_TOKEN + token);
 
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;

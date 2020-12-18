@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Update user model
+ * User response model
  *
  * @author Fazliddin Makhsudov
  */
@@ -16,4 +16,6 @@ public class UserResponseModel {
     private String email;
     private String gender;
     private Date birthdate;
+    private String location;
+    private long scores;
 }

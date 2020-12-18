@@ -11,6 +11,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class AuthResponseModel {
+
     private long id;
     private String email;
     private boolean isAdmin;

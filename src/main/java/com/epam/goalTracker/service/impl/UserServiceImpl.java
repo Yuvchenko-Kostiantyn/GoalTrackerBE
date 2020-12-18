@@ -17,6 +17,7 @@ import com.epam.goalTracker.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto create(UserDto userDto) {
+    public UserDto createUser(UserDto userDto) {
         log.info("Saving a new user " + userDto);
         if (userRepository.findByEmail(userDto.getEmail()) != null) {
             throw new UserConflictException("User already exists");
@@ -70,13 +71,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findById(long id) {
+    public UserDto findUserById(long id) {
         UserEntity userEntity = getUserEntityById(id);
         return modelMapper.map(userEntity, UserDto.class);
     }
 
     @Override
-    public UserDto findByEmail(String email) {
+    public UserDto findUserByEmail(String email) {
         log.info("Getting a person by email: " + email);
         UserEntity userEntity = userRepository.findByEmail(email);
         if (userEntity == null) {
@@ -95,6 +96,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setEmail(userDto.getEmail());
         userEntity.setGender(userDto.getGender());
         userEntity.setBirthdate(userDto.getBirthdate());
+        userEntity.setLocation(userDto.getLocation());
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         if (userDto.getRoles() != null) {
             List<RoleEntity> roleList = new ArrayList<>();
@@ -111,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(long id) {
+    public void deleteUserById(long id) {
         UserEntity userEntity = userRepository.findById(id).orElse(null);
         if (userEntity != null) {
             log.info("Deleting user with id: " + userEntity.getId());
@@ -122,7 +124,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(String email) {
+    public void deleteUserByEmail(String email) {
         UserEntity userEntity = userRepository.findByEmail(email);
         if (userEntity != null) {
             log.info("Deleting user with email: " + userEntity.getEmail());
@@ -140,7 +142,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JwtTokenBlackListDto getToken(String token) {
+    public JwtTokenBlackListDto findToken(String token) {
         JwtTokenBlackListEntity jwtTokenBlackListEntity = jwtTokenBlackListRepository.findByToken(token);
         if (jwtTokenBlackListEntity == null) {
             return null;
@@ -154,6 +156,13 @@ public class UserServiceImpl implements UserService {
         jwtTokenBlackListEntity.setToken(token);
         jwtTokenBlackListEntity.setDateOfAdding(LocalDateTime.now());
         jwtTokenBlackListRepository.save(jwtTokenBlackListEntity);
+    }
+
+    @Override
+    public List<UserDto> findAllUsersByLocation(String location) {
+        return userRepository.findByLocation(location).stream()
+                .map(userEntity -> modelMapper.map(userEntity, UserDto.class))
+                .collect(Collectors.toList());
     }
 
     private UserEntity getUserEntityById(long id) {

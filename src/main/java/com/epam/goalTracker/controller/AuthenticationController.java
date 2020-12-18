@@ -55,7 +55,7 @@ public class AuthenticationController {
 
     @GetMapping(path = "/signout")
     public ResponseEntity processToken (@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) {
-        JwtTokenBlackListDto jwtTokenBlackListDto = userService.getToken(token);
+        JwtTokenBlackListDto jwtTokenBlackListDto = userService.findToken(token);
         if (jwtTokenBlackListDto != null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -83,12 +83,15 @@ public class AuthenticationController {
         roleEntity.setName(Role.USER.name());
         RoleDto roleDto = modelMapper.map(roleEntity, RoleDto.class);
         userDto.setRoles(Arrays.asList(roleDto));
-        UserDto createdUser = userService.create(userDto);
+        UserDto createdUser = userService.createUser(userDto);
         UserEntity userEntity = modelMapper.map(createdUser, UserEntity.class);
+        AuthResponseModel responseModel = new AuthResponseModel();
+        responseModel.setEmail(userEntity.getEmail());
+        responseModel.setId(userEntity.getId());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(HttpHeaders.AUTHORIZATION,
                 jwtTokenProvider.createToken(userEntity.getEmail(), (List<RoleEntity>) userEntity.getRoles()));
-        return new ResponseEntity(responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity(responseModel, responseHeaders, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -96,7 +99,7 @@ public class AuthenticationController {
         try {
             String email = requestDto.getEmail();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, requestDto.getPassword()));
-            UserDto user = userService.findByEmail(email);
+            UserDto user = userService.findUserByEmail(email);
             UserEntity foundUser = modelMapper.map(user, UserEntity.class);
 
             AuthResponseModel responseModel = new AuthResponseModel();

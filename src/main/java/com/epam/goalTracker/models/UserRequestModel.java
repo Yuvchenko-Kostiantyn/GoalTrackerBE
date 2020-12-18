@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
- * Registration model
+ * User request model
  *
  * @author Fazliddin Makhsudov
  */
@@ -19,4 +19,5 @@ public class UserRequestModel {
     private String password;
     private String gender;
     private Date birthdate;
+    private String location;
 }

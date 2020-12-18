@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RestController
 @CrossOrigin
@@ -27,17 +30,15 @@ public class UserController {
 
     }
 
-    @CrossOrigin
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getUser(@PathVariable long id) {
 
-        UserDto user = userService.findById(id);
+        UserDto user = userService.findUserById(id);
         UserResponseModel responseModel = modelMapper.map(user, UserResponseModel.class);
         return ResponseEntity.ok(responseModel);
     }
 
-    @CrossOrigin
     @PutMapping(path = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity updateUser(@PathVariable long id,
@@ -46,5 +47,16 @@ public class UserController {
         UserDto userDto = modelMapper.map(userRequestModel, UserDto.class);
         userService.updateUser(id, userDto);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/location/{location}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getUser(@PathVariable String location) {
+
+        List<UserDto> userDtoList = userService.findAllUsersByLocation(location);
+        List<UserResponseModel> userResponseModels = userDtoList.stream()
+                .map(userDto -> modelMapper.map(userDto, UserResponseModel.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userResponseModels);
     }
 }

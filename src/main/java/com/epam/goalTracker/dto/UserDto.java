@@ -25,6 +25,8 @@ public class UserDto {
     private String encryptedPassword;
     private Date birthdate;
     private Gender gender;
+    private String location;
+    private long scores;
     private Collection<RoleDto> roles;
 
 }

@@ -23,14 +23,15 @@ public class DayProgressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column
     private Date date;
+
     @Column
     private String url;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "personal_goals_id", referencedColumnName = "id")
     private PersonalGoalEntity personalGoal;
-
 
 }
