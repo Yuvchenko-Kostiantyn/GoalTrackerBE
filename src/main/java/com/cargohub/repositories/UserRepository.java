@@ -1,6 +1,6 @@
-package com.epam.goalTracker.repository;
+package com.cargohub.repositories;
 
-import com.epam.goalTracker.entities.UserEntity;
+import com.cargohub.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
