@@ -8,6 +8,16 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
+/**
+ * User Entity
+ *
+ * @author Yevhenii Kravtsov
+ * @version 1.0
+ * @date 18.12.2020 21:15
+ */
+
 
 @Entity
 @Table(name = "users")
@@ -43,4 +53,7 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
     private Collection<RoleEntity> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PersonalGoalEntity> personalGoals;
 }
