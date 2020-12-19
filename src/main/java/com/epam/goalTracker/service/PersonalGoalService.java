@@ -11,6 +11,7 @@ import java.util.Map;
  *
  * @author Fazliddin Makhsudov
  */
+
 public interface PersonalGoalService {
 
     PersonalGoalDto createPersonalGoal(PersonalGoalDto personalGoalDto);
