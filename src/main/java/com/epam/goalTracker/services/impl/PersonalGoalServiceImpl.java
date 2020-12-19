@@ -1,16 +1,16 @@
 package com.epam.goalTracker.services.impl;
 
+import com.epam.goalTracker.repositories.PersonalGoalRepository;
+import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
+import com.epam.goalTracker.repositories.entities.PersonalGoalEntity;
+import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
+import com.epam.goalTracker.repositories.entities.enums.Season;
+import com.epam.goalTracker.services.GlobalGoalService;
+import com.epam.goalTracker.services.PersonalGoalService;
+import com.epam.goalTracker.services.UserService;
+import com.epam.goalTracker.services.domains.GlobalGoalDomain;
 import com.epam.goalTracker.services.domains.PersonalGoalDomain;
 import com.epam.goalTracker.services.domains.UserDomain;
-import com.epam.goalTracker.repositories.entities.PersonalGoalEntity;
-import com.epam.goalTracker.repositories.entities.UserEntity;
-import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
-import com.epam.goalTracker.exceptions.ErrorMessages;
-import com.epam.goalTracker.exceptions.UserNotFoundException;
-import com.epam.goalTracker.repositories.GlobalGoalRepository;
-import com.epam.goalTracker.repositories.PersonalGoalRepository;
-import com.epam.goalTracker.repositories.UserRepository;
-import com.epam.goalTracker.services.PersonalGoalService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -25,24 +25,41 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class PersonalGoalServiceImpl implements PersonalGoalService{
+public class PersonalGoalServiceImpl implements PersonalGoalService {
 
     private PersonalGoalService personalGoalService;
     private PersonalGoalRepository personalGoalRepository;
-    private UserRepository userRepository;
-    private GlobalGoalRepository globalGoalRepository;
+    private UserService userService;
+    private GlobalGoalService globalGoalService;
     private ModelMapper modelMapper;
 
     @Override
-    public PersonalGoalDomain createPersonalGoal(long userId, PersonalGoalDomain personalGoalDomain) {
+    public PersonalGoalDomain createPersonalGoal(long userId, long globalGoalId, PersonalGoalDomain personalGoalDomain) {
         log.info("Saving a new personal goal " + personalGoalDomain);
-        UserEntity userEntity = userRepository.findById(userId).orElse(null);
-        if (userEntity == null) {
-            throw new UserNotFoundException(ErrorMessages.NO_USER_FOUND);
+        System.out.println(userId + "   " + globalGoalId );
+        UserDomain userDomain = userService.findUserById(userId);
+        System.out.println("service 2");
+        GlobalGoalDomain globalGoalDomain;
+        if (globalGoalService.checkGlobalGoalExistence(globalGoalId)) {
+            System.out.println("service 3+");
+            globalGoalDomain = globalGoalService.findGlobalDomainById(globalGoalId);
+        } else {
+            System.out.println("service 3-");
+            long differenceInTime = personalGoalDomain.getEndDate().getTime()
+                    - personalGoalDomain.getStartDate().getTime();
+            long differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
+            GlobalGoalEntity globalGoalEntity = GlobalGoalEntity.builder()
+                    .name(personalGoalDomain.getName())
+                    .days(differenceInDays)
+                    .season(Season.ALL_YEAR)
+                    .build();
+            globalGoalDomain = globalGoalService.createGlobalGoal(modelMapper.map(globalGoalEntity, GlobalGoalDomain.class));
         }
-        personalGoalDomain.setUserDomain(modelMapper.map(userEntity, UserDomain.class));
-        System.out.println(personalGoalDomain + "   service 1");
+        System.out.println("service 4");
+        personalGoalDomain.setUserDomain(userDomain);
+        personalGoalDomain.setGlobalGoal(globalGoalDomain);
         PersonalGoalEntity personalGoalEntity = modelMapper.map(personalGoalDomain, PersonalGoalEntity.class);
+        System.out.println(personalGoalDomain + "   service 5");
         PersonalGoalEntity storedPersonalGoal = personalGoalRepository.save(personalGoalEntity);
         return modelMapper.map(storedPersonalGoal, PersonalGoalDomain.class);
     }

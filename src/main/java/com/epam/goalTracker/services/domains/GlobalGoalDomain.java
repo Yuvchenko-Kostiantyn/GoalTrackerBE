@@ -20,6 +20,6 @@ public class GlobalGoalDomain {
     private String name;
     private long days;
     private Season season;
-    private List<PersonalGoalEntity> personalGoals;
+    private List<PersonalGoalDomain> personalGoals;
 
 }

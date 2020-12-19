@@ -24,7 +24,7 @@ public class PersonalGoalDomain {
     private Date endDate;
     private Date pausedDate;
     private PersonalGoalStatus status;
-    private GlobalGoalEntity globalGoal;
+    private GlobalGoalDomain globalGoal;
     private UserDomain userDomain;
     private List<DayProgressEntity> dayProgresses;
 

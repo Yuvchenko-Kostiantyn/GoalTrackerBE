@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface PersonalGoalService {
 
-    PersonalGoalDomain createPersonalGoal(long userId, PersonalGoalDomain personalGoalDomain);
+    PersonalGoalDomain createPersonalGoal(long userId, long globalGoalId, PersonalGoalDomain personalGoalDomain);
 
     PersonalGoalDomain findPersonalGoal(long userId, long personalGoalId);
 

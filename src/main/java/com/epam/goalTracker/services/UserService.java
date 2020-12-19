@@ -14,10 +14,9 @@ import java.util.List;
 public interface UserService {
 
     /**
-     * Creates user dto
      * 
      * @param userDomain user data
-     * @return user dto
+     * @return user
      */
     UserDomain createUser(UserDomain userDomain);
 

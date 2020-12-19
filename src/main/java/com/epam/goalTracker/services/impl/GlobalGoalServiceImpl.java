@@ -1,5 +1,9 @@
 package com.epam.goalTracker.services.impl;
 
+import com.epam.goalTracker.exceptions.UserConflictException;
+import com.epam.goalTracker.repositories.entities.RoleEntity;
+import com.epam.goalTracker.repositories.entities.UserEntity;
+import com.epam.goalTracker.repositories.entities.enums.Role;
 import com.epam.goalTracker.services.domains.GlobalGoalDomain;
 import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
 import com.epam.goalTracker.repositories.entities.enums.Season;
@@ -7,11 +11,14 @@ import com.epam.goalTracker.exceptions.ErrorMessages;
 import com.epam.goalTracker.exceptions.GlobalGoalNotFoundException;
 import com.epam.goalTracker.repositories.GlobalGoalRepository;
 import com.epam.goalTracker.services.GlobalGoalService;
+import com.epam.goalTracker.services.domains.UserDomain;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +44,19 @@ public class GlobalGoalServiceImpl implements GlobalGoalService {
 
 
     @Override
-    public GlobalGoalDomain findGlobalDtoById(long id) {
+    public GlobalGoalDomain createGlobalGoal(GlobalGoalDomain globalGoalDomain) {
+        log.info("Saving a new item " + globalGoalDomain);
+        if (globalGoalRepository.findById(globalGoalDomain.getId()) != null) {
+            throw new UserConflictException("Global goal already exists");
+        }
+        GlobalGoalEntity globalGoalEntity = modelMapper.map(globalGoalDomain, GlobalGoalEntity.class);
+       //Todo collection of personal goals to include
+
+        return modelMapper.map(globalGoalRepository.save(globalGoalEntity), GlobalGoalDomain.class);
+    }
+
+    @Override
+    public GlobalGoalDomain findGlobalDomainById(long id) {
         log.info("Find global goal by id");
         GlobalGoalEntity globalGoalEntity = globalGoalRepository.findById(id).orElse(null);
         if (globalGoalEntity == null) {
@@ -59,5 +78,10 @@ public class GlobalGoalServiceImpl implements GlobalGoalService {
         log.info("Getting a list of all global goals");
         return globalGoalRepository.findAll().stream().map(globalGoalEntity -> modelMapper.map(globalGoalEntity, GlobalGoalDomain.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean checkGlobalGoalExistence(long id) {
+        return (globalGoalRepository.findById(id).orElse(null) != null);
     }
 }

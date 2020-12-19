@@ -33,7 +33,7 @@ public class GlobalGoalController {
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getGlobalGoal(@PathVariable long id) {
-        GlobalGoalDomain globalGoalDomain = globalGoalService.findGlobalDtoById(id);
+        GlobalGoalDomain globalGoalDomain = globalGoalService.findGlobalDomainById(id);
         GlobalGoalResponseModel responseModel = modelMapper.map(globalGoalDomain, GlobalGoalResponseModel.class);
         return ResponseEntity.ok(responseModel);
     }

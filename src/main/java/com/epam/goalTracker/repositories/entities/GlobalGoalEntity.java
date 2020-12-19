@@ -1,6 +1,7 @@
 package com.epam.goalTracker.repositories.entities;
 
 import com.epam.goalTracker.repositories.entities.enums.Season;
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Table(name = "global_goals")
 @Data
 @ToString
+@Builder
 public class GlobalGoalEntity {
 
     @Id

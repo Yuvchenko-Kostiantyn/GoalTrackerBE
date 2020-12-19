@@ -19,4 +19,5 @@ public class PersonalGoalRequestModel {
     private Date endDate;
     private long globalGoalId; // -1
     private long userId;
+
 }
