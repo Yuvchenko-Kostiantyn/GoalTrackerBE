@@ -88,9 +88,11 @@ public class AuthenticationController {
         AuthResponseModel responseModel = new AuthResponseModel();
         responseModel.setEmail(userEntity.getEmail());
         responseModel.setId(userEntity.getId());
+        String token = jwtTokenProvider.createToken(userEntity.getEmail(), (List<RoleEntity>) userEntity.getRoles());
+        responseModel.setToken(token);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set(HttpHeaders.AUTHORIZATION,
-                jwtTokenProvider.createToken(userEntity.getEmail(), (List<RoleEntity>) userEntity.getRoles()));
+        responseHeaders.set(HttpHeaders.AUTHORIZATION, token);
+
         return new ResponseEntity(responseModel, responseHeaders, HttpStatus.CREATED);
     }
 
@@ -106,6 +108,7 @@ public class AuthenticationController {
             responseModel.setEmail(foundUser.getEmail());
             responseModel.setId(foundUser.getId());
             String token = jwtTokenProvider.createToken(email, (List<RoleEntity>) foundUser.getRoles());
+            responseModel.setToken(token);
             for (RoleEntity roleEntity : foundUser.getRoles()) {
                 if (roleEntity.getName().equals(Role.ADMIN.name())) {
                     responseModel.setAdmin(true);
@@ -114,8 +117,7 @@ public class AuthenticationController {
             }
 
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set(HttpHeaders.AUTHORIZATION,
-                    jwtTokenProvider.createToken(foundUser.getEmail(), (List<RoleEntity>) foundUser.getRoles()));
+            responseHeaders.set(HttpHeaders.AUTHORIZATION, token);
             return ResponseEntity.ok()
                     .headers(responseHeaders)
                     .body(responseModel);

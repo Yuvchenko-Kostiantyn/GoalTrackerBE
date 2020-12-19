@@ -15,4 +15,5 @@ public class AuthResponseModel {
     private long id;
     private String email;
     private boolean isAdmin;
+    private String token;
 }
