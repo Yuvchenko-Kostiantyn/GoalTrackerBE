@@ -5,7 +5,6 @@ pipeline {
         registry = "mrpipikado/gt_back" 
         registryCredential = 'docker' 
         dockerImage = '' 
-        dockerOut = ''
     }
    agent {
      node {
@@ -24,8 +23,7 @@ pipeline {
       stage('build docker image') {
           steps {
           script { 
-                    dockerOut = registry + ":latest"
-                    dockerImage = docker.build registry + ":latest" + " --network host " 
+                    dockerImage = docker.build("$registry:latest", "--network host .")
                 }
           }
       }
@@ -33,7 +31,7 @@ pipeline {
             steps { 
                 script { 
                     docker.withRegistry( '', registryCredential ) { 
-                        dockerOut.push() 
+                        dockerImage.push() 
                     }
                 } 
             }
