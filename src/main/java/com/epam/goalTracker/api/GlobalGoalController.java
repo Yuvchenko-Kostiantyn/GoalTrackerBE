@@ -41,7 +41,7 @@ public class GlobalGoalController {
     @GetMapping(path = "/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllGlobalGoals() {
-        List<GlobalGoalDomain> globalGoalDomainList = globalGoalService.findAllGlobalDto();
+        List<GlobalGoalDomain> globalGoalDomainList = globalGoalService.findAllGlobalDomain();
         List<GlobalGoalResponseModel> globalGoalResponseModels = globalGoalDomainList.stream()
                 .map(globalGoalDomain -> modelMapper.map(globalGoalDomain, GlobalGoalResponseModel.class))
                 .collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class GlobalGoalController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllGlobalGoalsBySeason(@RequestParam String season) {
         System.out.println(season + " 1");
-        List<GlobalGoalDomain> globalGoalDomainList = globalGoalService.findAllGlobalDtoBySeason(season);
+        List<GlobalGoalDomain> globalGoalDomainList = globalGoalService.findAllGlobalDomainBySeason(season);
         System.out.println(globalGoalDomainList + " 2");
         List<GlobalGoalResponseModel> globalGoalResponseModels = globalGoalDomainList.stream()
                 .map(globalGoalDomain -> modelMapper.map(globalGoalDomain, GlobalGoalResponseModel.class))

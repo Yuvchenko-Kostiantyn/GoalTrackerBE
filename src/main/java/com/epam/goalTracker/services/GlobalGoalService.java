@@ -15,9 +15,9 @@ public interface GlobalGoalService {
 
     GlobalGoalDomain findGlobalDomainById(long id);
 
-    List<GlobalGoalDomain> findAllGlobalDtoBySeason(String season);
+    List<GlobalGoalDomain> findAllGlobalDomainBySeason(String season);
 
-    List<GlobalGoalDomain> findAllGlobalDto();
+    List<GlobalGoalDomain> findAllGlobalDomain();
 
     boolean checkGlobalGoalExistence(long id);
 }

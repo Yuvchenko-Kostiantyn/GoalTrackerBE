@@ -13,13 +13,17 @@ import com.epam.goalTracker.services.domains.PersonalGoalDomain;
 import com.epam.goalTracker.services.domains.UserDomain;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
 /**
+ * Personal Goal service implementation
+ *
  * @author Yevhenii Kravtsov
+ * @author Fazliddin Makhsudov
  * @version 1.0
  * @date 19.12.2020 18:36
  */
@@ -27,24 +31,30 @@ import java.util.Map;
 @Slf4j
 public class PersonalGoalServiceImpl implements PersonalGoalService {
 
-    private PersonalGoalService personalGoalService;
     private PersonalGoalRepository personalGoalRepository;
     private UserService userService;
     private GlobalGoalService globalGoalService;
     private ModelMapper modelMapper;
 
+    @Autowired
+    public PersonalGoalServiceImpl(PersonalGoalRepository personalGoalRepository, UserService userService,
+                                   GlobalGoalService globalGoalService, ModelMapper modelMapper) {
+        this.personalGoalRepository = personalGoalRepository;
+        this.userService = userService;
+        this.globalGoalService = globalGoalService;
+        this.modelMapper = modelMapper;
+    }
+
     @Override
     public PersonalGoalDomain createPersonalGoal(long userId, long globalGoalId, PersonalGoalDomain personalGoalDomain) {
         log.info("Saving a new personal goal " + personalGoalDomain);
-        System.out.println(userId + "   " + globalGoalId );
         UserDomain userDomain = userService.findUserById(userId);
-        System.out.println("service 2");
         GlobalGoalDomain globalGoalDomain;
         if (globalGoalService.checkGlobalGoalExistence(globalGoalId)) {
-            System.out.println("service 3+");
+            System.out.println("serv 1");
             globalGoalDomain = globalGoalService.findGlobalDomainById(globalGoalId);
+            System.out.println("serv 2 " + globalGoalDomain);
         } else {
-            System.out.println("service 3-");
             long differenceInTime = personalGoalDomain.getEndDate().getTime()
                     - personalGoalDomain.getStartDate().getTime();
             long differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
@@ -55,11 +65,9 @@ public class PersonalGoalServiceImpl implements PersonalGoalService {
                     .build();
             globalGoalDomain = globalGoalService.createGlobalGoal(modelMapper.map(globalGoalEntity, GlobalGoalDomain.class));
         }
-        System.out.println("service 4");
         personalGoalDomain.setUserDomain(userDomain);
         personalGoalDomain.setGlobalGoal(globalGoalDomain);
         PersonalGoalEntity personalGoalEntity = modelMapper.map(personalGoalDomain, PersonalGoalEntity.class);
-        System.out.println(personalGoalDomain + "   service 5");
         PersonalGoalEntity storedPersonalGoal = personalGoalRepository.save(personalGoalEntity);
         return modelMapper.map(storedPersonalGoal, PersonalGoalDomain.class);
     }

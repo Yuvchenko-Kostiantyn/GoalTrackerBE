@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
  * Global goal service implementation
  *
  * @author Yevhenii Kravtsov
+ * @author Fazliddin Makhsudov
  * @version 1.0
  * @date 19.12.2020 11:58
  */
@@ -46,13 +47,12 @@ public class GlobalGoalServiceImpl implements GlobalGoalService {
     @Override
     public GlobalGoalDomain createGlobalGoal(GlobalGoalDomain globalGoalDomain) {
         log.info("Saving a new item " + globalGoalDomain);
-        if (globalGoalRepository.findById(globalGoalDomain.getId()) != null) {
-            throw new UserConflictException("Global goal already exists");
+        GlobalGoalEntity globalGoalEntity = globalGoalRepository.findById(globalGoalDomain.getId()).orElse(null);
+        if (globalGoalEntity == null) {
+            globalGoalEntity = globalGoalRepository.save(modelMapper.map(globalGoalDomain, GlobalGoalEntity.class));
         }
-        GlobalGoalEntity globalGoalEntity = modelMapper.map(globalGoalDomain, GlobalGoalEntity.class);
        //Todo collection of personal goals to include
-
-        return modelMapper.map(globalGoalRepository.save(globalGoalEntity), GlobalGoalDomain.class);
+        return modelMapper.map(globalGoalEntity, GlobalGoalDomain.class);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class GlobalGoalServiceImpl implements GlobalGoalService {
     }
 
     @Override
-    public List<GlobalGoalDomain> findAllGlobalDtoBySeason(String seasonString) {
+    public List<GlobalGoalDomain> findAllGlobalDomainBySeason(String seasonString) {
         log.info("Find global goal by seasonString");
         return globalGoalRepository.findBySeason(Season.valueOf(seasonString.toUpperCase())).stream()
                 .map(globalGoalEntity -> modelMapper.map(globalGoalEntity, GlobalGoalDomain.class))
@@ -74,7 +74,7 @@ public class GlobalGoalServiceImpl implements GlobalGoalService {
     }
 
     @Override
-    public List<GlobalGoalDomain> findAllGlobalDto() {
+    public List<GlobalGoalDomain> findAllGlobalDomain() {
         log.info("Getting a list of all global goals");
         return globalGoalRepository.findAll().stream().map(globalGoalEntity -> modelMapper.map(globalGoalEntity, GlobalGoalDomain.class))
                 .collect(Collectors.toList());

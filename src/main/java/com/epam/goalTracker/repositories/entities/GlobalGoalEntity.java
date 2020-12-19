@@ -1,9 +1,7 @@
 package com.epam.goalTracker.repositories.entities;
 
 import com.epam.goalTracker.repositories.entities.enums.Season;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,6 +19,8 @@ import java.util.List;
 @Data
 @ToString
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GlobalGoalEntity {
 
     @Id
