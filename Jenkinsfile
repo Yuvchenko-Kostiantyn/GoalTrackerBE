@@ -23,7 +23,7 @@ pipeline {
       stage('build docker image') {
           steps {
           script { 
-                    dockerImage = docker.build() registry + ":latest --network host" 
+                    dockerImage = docker.build registry + ":latest" + " --network host ." 
                 }
           }
       }
