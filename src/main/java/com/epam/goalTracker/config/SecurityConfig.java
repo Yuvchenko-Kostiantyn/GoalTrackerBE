@@ -1,6 +1,5 @@
 package com.epam.goalTracker.config;
 
-import com.epam.goalTracker.entities.enums.Role;
 import com.epam.goalTracker.security.jwt.JwtConfigurer;
 import com.epam.goalTracker.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;

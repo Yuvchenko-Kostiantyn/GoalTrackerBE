@@ -1,7 +1,5 @@
 package com.epam.goalTracker.exceptions;
 
-import com.epam.goalTracker.service.GlobalGoalService;
-
 /**
  * @author Yevhenii Kravtsov
  * @version 1.0

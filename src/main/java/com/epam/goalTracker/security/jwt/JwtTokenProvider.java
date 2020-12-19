@@ -1,9 +1,9 @@
 package com.epam.goalTracker.security.jwt;
 
-import com.epam.goalTracker.dto.JwtTokenBlackListDto;
-import com.epam.goalTracker.entities.RoleEntity;
+import com.epam.goalTracker.services.domains.JwtTokenBlackListDomain;
+import com.epam.goalTracker.repositories.entities.RoleEntity;
 import com.epam.goalTracker.exceptions.JwtAuthenticationException;
-import com.epam.goalTracker.service.UserService;
+import com.epam.goalTracker.services.UserService;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -87,12 +87,12 @@ public class JwtTokenProvider {
         System.out.println("Token provide 1 ");
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            JwtTokenBlackListDto jwtTokenBlackListDto = userService.findToken(PREFIX_TOKEN + token);
+            JwtTokenBlackListDomain jwtTokenBlackListDomain = userService.findToken(PREFIX_TOKEN + token);
 
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;
             }
-            if (jwtTokenBlackListDto != null) {
+            if (jwtTokenBlackListDomain != null) {
                 throw new JwtAuthenticationException("JWT token is expired or invalid");
             }
             return true;

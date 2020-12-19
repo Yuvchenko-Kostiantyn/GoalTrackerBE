@@ -1,7 +1,7 @@
 package com.epam.goalTracker.security.jwt;
 
-import com.epam.goalTracker.entities.RoleEntity;
-import com.epam.goalTracker.entities.UserEntity;
+import com.epam.goalTracker.repositories.entities.RoleEntity;
+import com.epam.goalTracker.repositories.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.ArrayList;
