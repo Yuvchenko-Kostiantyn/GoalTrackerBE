@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Global goal dto
+ * User repository
  *
  * @author Yevhenii Kravtsov
  * @author Fazliddin Makhsudov

@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface GlobalGoalService {
 
-    GlobalGoalDto findGlobalDto(long id);
+    GlobalGoalDto findGlobalDtoById(long id);
 
-    List<GlobalGoalDto> findAllGlobalDto(String season);
+    List<GlobalGoalDto> findAllGlobalDtoBySeason(String season);
 
     List<GlobalGoalDto> findAllGlobalDto();
 }
