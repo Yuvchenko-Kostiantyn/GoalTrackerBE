@@ -3,6 +3,7 @@ package com.epam.goalTracker.services.domains;
 import com.epam.goalTracker.repositories.entities.DayProgressEntity;
 import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
 import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
+import com.epam.goalTracker.repositories.entities.enums.Season;
 import lombok.Data;
 import lombok.ToString;
 
@@ -20,6 +21,8 @@ public class PersonalGoalDomain {
 
     private long id;
     private String name;
+    private String description;
+    private Season season;
     private Date startDate;
     private Date endDate;
     private Date pausedDate;

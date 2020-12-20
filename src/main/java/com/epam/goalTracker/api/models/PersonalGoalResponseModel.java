@@ -13,12 +13,13 @@ import java.util.Date;
 @Data
 @ToString
 public class PersonalGoalResponseModel {
+
     private long id;
     private String name;
     private Date startDate;
     private Date endDate;
     private Date pausedDate;
     private String status;
-    private long globalGoalId;
-    private long userId;
+    private String description; // addd to
+    private long days;
 }

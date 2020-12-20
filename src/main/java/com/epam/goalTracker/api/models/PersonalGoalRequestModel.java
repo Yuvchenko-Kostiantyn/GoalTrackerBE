@@ -15,9 +15,11 @@ import java.util.Date;
 public class PersonalGoalRequestModel {
 
     private String name;
+    private String description;
+    private String season;
     private Date startDate;
     private Date endDate;
-    private long globalGoalId; // -1
-    private long userId;
+    private long globalGoalid;
+    private long userid;
 
 }
