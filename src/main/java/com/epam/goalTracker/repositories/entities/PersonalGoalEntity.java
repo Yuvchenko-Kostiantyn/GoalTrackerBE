@@ -25,9 +25,6 @@ public class PersonalGoalEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="name")
-    private String name;
-
     @Column(name="start_date")
     private Date startDate;
 
@@ -38,6 +35,7 @@ public class PersonalGoalEntity {
     private Date pausedDate;
 
     @Column(name="status")
+    @Enumerated(value = EnumType.STRING)
     private PersonalGoalStatus status;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

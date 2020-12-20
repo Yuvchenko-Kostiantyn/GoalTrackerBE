@@ -51,7 +51,6 @@ public class GlobalGoalServiceImpl implements GlobalGoalService {
         if (globalGoalEntity == null) {
             globalGoalEntity = globalGoalRepository.save(modelMapper.map(globalGoalDomain, GlobalGoalEntity.class));
         }
-       //Todo collection of personal goals to include
         return modelMapper.map(globalGoalEntity, GlobalGoalDomain.class);
     }
 

@@ -27,5 +27,6 @@ public class UserDomain {
     private String location;
     private long scores;
     private Collection<RoleDomain> roles;
+    private Collection<PersonalGoalDomain> personalGoalDomains;
 
 }

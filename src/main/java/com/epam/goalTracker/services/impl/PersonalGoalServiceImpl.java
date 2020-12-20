@@ -1,8 +1,13 @@
 package com.epam.goalTracker.services.impl;
 
+import com.epam.goalTracker.exceptions.ErrorMessages;
+import com.epam.goalTracker.exceptions.UserNotFoundException;
+import com.epam.goalTracker.repositories.GlobalGoalRepository;
 import com.epam.goalTracker.repositories.PersonalGoalRepository;
+import com.epam.goalTracker.repositories.UserRepository;
 import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
 import com.epam.goalTracker.repositories.entities.PersonalGoalEntity;
+import com.epam.goalTracker.repositories.entities.UserEntity;
 import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
 import com.epam.goalTracker.repositories.entities.enums.Season;
 import com.epam.goalTracker.services.GlobalGoalService;
@@ -16,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,46 +41,65 @@ public class PersonalGoalServiceImpl implements PersonalGoalService {
     private UserService userService;
     private GlobalGoalService globalGoalService;
     private ModelMapper modelMapper;
+    private GlobalGoalRepository globalGoalRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public PersonalGoalServiceImpl(PersonalGoalRepository personalGoalRepository, UserService userService,
-                                   GlobalGoalService globalGoalService, ModelMapper modelMapper) {
+                                   GlobalGoalService globalGoalService, ModelMapper modelMapper,
+                                   UserRepository userRepository, GlobalGoalRepository globalGoalRepository) {
         this.personalGoalRepository = personalGoalRepository;
         this.userService = userService;
         this.globalGoalService = globalGoalService;
         this.modelMapper = modelMapper;
+        this.userRepository = userRepository;
+        this.globalGoalRepository = globalGoalRepository;
     }
 
     @Override
-    public PersonalGoalDomain createPersonalGoal(long userId, long globalGoalId, PersonalGoalDomain personalGoalDomain) {
-        log.info("Saving a new personal goal " + personalGoalDomain);
-        UserDomain userDomain = userService.findUserById(userId);
-        GlobalGoalDomain globalGoalDomain;
-        if (globalGoalService.checkGlobalGoalExistence(globalGoalId)) {
-            System.out.println("serv 1");
-            globalGoalDomain = globalGoalService.findGlobalDomainById(globalGoalId);
-            System.out.println("serv 2 " + globalGoalDomain);
+    public PersonalGoalDomain createPersonalGoal(long userId, long globalGoalId,
+                                                 PersonalGoalDomain personalGoalDomain) {
+        log.info("Saving a new personal goal ");
+        PersonalGoalEntity personalGoalEntity = modelMapper.map(personalGoalDomain, PersonalGoalEntity.class);
+        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        if (userEntity == null) {
+            throw new UserNotFoundException(ErrorMessages.NO_USER_FOUND);
         } else {
+            personalGoalEntity.setUser(userEntity);
+            userEntity.getPersonalGoals().add(personalGoalEntity);
+        }
+        GlobalGoalEntity globalGoalEntity = globalGoalRepository.findById(globalGoalId).orElse(null);
+        if (globalGoalEntity == null) {
             long differenceInTime = personalGoalDomain.getEndDate().getTime()
                     - personalGoalDomain.getStartDate().getTime();
             long differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
-            GlobalGoalEntity globalGoalEntity = GlobalGoalEntity.builder()
+            globalGoalEntity = GlobalGoalEntity.builder()
                     .name(personalGoalDomain.getName())
                     .days(differenceInDays)
-                    .season(Season.ALL_YEAR)
+                    .personal(true)
+                    .description(personalGoalDomain.getDescription())
+                    .season(personalGoalDomain.getSeason())
+                    .personalGoals(new ArrayList<>())
                     .build();
-            globalGoalDomain = globalGoalService.createGlobalGoal(modelMapper.map(globalGoalEntity, GlobalGoalDomain.class));
         }
-        personalGoalDomain.setUserDomain(userDomain);
-        personalGoalDomain.setGlobalGoal(globalGoalDomain);
-        PersonalGoalEntity personalGoalEntity = modelMapper.map(personalGoalDomain, PersonalGoalEntity.class);
-        PersonalGoalEntity storedPersonalGoal = personalGoalRepository.save(personalGoalEntity);
-        return modelMapper.map(storedPersonalGoal, PersonalGoalDomain.class);
+        personalGoalEntity.setStatus(PersonalGoalStatus.PLANNED);
+        globalGoalEntity.getPersonalGoals().add(personalGoalEntity);
+        personalGoalEntity.setGlobalGoal(globalGoalEntity);
+        personalGoalRepository.save(personalGoalEntity);
+        personalGoalDomain.setId(personalGoalEntity.getId());
+        return personalGoalDomain;
     }
 
     @Override
     public PersonalGoalDomain findPersonalGoal(long userId, long personalGoalId) {
-        return null;
+        PersonalGoalEntity personalGoalEntity =
+                personalGoalRepository.findUserPersonalGoal(userId, personalGoalId);
+        PersonalGoalDomain personalGoalDomain = modelMapper.map(personalGoalEntity, PersonalGoalDomain.class);
+        personalGoalDomain.setName(personalGoalEntity.getGlobalGoal().getName());
+        personalGoalDomain.setDescription(personalGoalEntity.getGlobalGoal().getDescription());
+        personalGoalDomain.setSeason(personalGoalEntity.getGlobalGoal().getSeason());
+        personalGoalDomain.setDays(personalGoalEntity.getGlobalGoal().getDays());
+        return personalGoalDomain;
     }
 
     @Override
