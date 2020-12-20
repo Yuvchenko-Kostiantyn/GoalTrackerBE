@@ -1,5 +1,6 @@
 package com.epam.goalTracker.services;
 
+import com.epam.goalTracker.repositories.PersonalGoalStatusWrapper;
 import com.epam.goalTracker.services.domains.PersonalGoalDomain;
 import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
 
@@ -22,7 +23,7 @@ public interface PersonalGoalService {
 
     List<PersonalGoalDomain> findPersonalGoalsByStatus(long userId, String goalStatus);
 
-    Map<PersonalGoalStatus, Integer> findPersonalGoalsByStatus(long userId);
+    Map<PersonalGoalStatus, Integer> groupPersonalGoalsByStatuses(long userId);
 
     List<PersonalGoalDomain> findAllPersonalGoals(long userId);
 }

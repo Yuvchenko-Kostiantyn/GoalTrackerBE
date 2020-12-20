@@ -1,16 +1,17 @@
 package com.epam.goalTracker.repositories;
 
 import com.epam.goalTracker.repositories.entities.PersonalGoalEntity;
+import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Personal goal repository
  *
- * @author Yevhenii Kravtsov
  * @author Fazliddin Makhsudov
  * @version 1.0
  * @date 19.12.2020 11:53
@@ -21,7 +22,7 @@ public interface PersonalGoalRepository extends JpaRepository<PersonalGoalEntity
     @Query(
             value = "SELECT * FROM personal_goals p WHERE p.users_id = ?1 and p.status = ?2",
             nativeQuery = true)
-    List<PersonalGoalEntity> findUserByStatusNative(long userId, String status);
+    List<PersonalGoalEntity> findUserPersonalGoalsByStatus(long userId, String status);
 
     @Query(
             value = "SELECT * FROM personal_goals p WHERE p.users_id = ?1",
@@ -32,5 +33,13 @@ public interface PersonalGoalRepository extends JpaRepository<PersonalGoalEntity
             value = "SELECT * FROM personal_goals p WHERE p.users_id = ?1 and p.id = ?2",
             nativeQuery = true)
     PersonalGoalEntity findUserPersonalGoal(long userId, long personalGoalId);
+
+    @Query(
+            value = "SELECT p.status, count(p.status) FROM personal_goals p where p.users_id = ?1 group by p.status",
+//            value = "select com.epam.goalTracker.repositories.PersonalGoalStatusWrapper(p.status, "
+//                    + "count(p.status) "
+//                    + "FROM personal_goals p where p.users_id = ?1 group by p.status",
+            nativeQuery = true)
+    List<PersonalGoalStatusWrapper> obtainMapOfPersonalGoalStatus(long userId);
 
 }
