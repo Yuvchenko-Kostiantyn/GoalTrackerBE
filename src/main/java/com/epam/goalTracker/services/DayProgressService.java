@@ -13,7 +13,9 @@ public interface DayProgressService {
 
     DayProgressDomain createDayProgressDto(long personalGoalId, DayProgressDomain dayProgressDomain);
 
-    DayProgressDomain findDayProgressDto(long personalGoalId, long dayProgressDtoId);
+    DayProgressDomain findDayProgressDto(long dayProgressDtoId);
+
+    void deleteDayProgressByID(long dayProgressId);
 
     List<DayProgressDomain> findAllDayProgresses(long personalGoalId);
 
