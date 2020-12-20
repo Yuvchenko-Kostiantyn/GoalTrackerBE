@@ -16,10 +16,11 @@ public class PersonalGoalResponseModel {
 
     private long id;
     private String name;
+    private String description;
+    private String season;
+    private long days;
     private Date startDate;
     private Date endDate;
     private Date pausedDate;
     private String status;
-    private String description; // addd to
-    private long days;
 }

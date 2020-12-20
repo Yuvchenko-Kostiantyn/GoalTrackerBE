@@ -92,7 +92,14 @@ public class PersonalGoalServiceImpl implements PersonalGoalService {
 
     @Override
     public PersonalGoalDomain findPersonalGoal(long userId, long personalGoalId) {
-        return null;
+        PersonalGoalEntity personalGoalEntity =
+                personalGoalRepository.findUserPersonalGoal(userId, personalGoalId);
+        PersonalGoalDomain personalGoalDomain = modelMapper.map(personalGoalEntity, PersonalGoalDomain.class);
+        personalGoalDomain.setName(personalGoalEntity.getGlobalGoal().getName());
+        personalGoalDomain.setDescription(personalGoalEntity.getGlobalGoal().getDescription());
+        personalGoalDomain.setSeason(personalGoalEntity.getGlobalGoal().getSeason());
+        personalGoalDomain.setDays(personalGoalEntity.getGlobalGoal().getDays());
+        return personalGoalDomain;
     }
 
     @Override

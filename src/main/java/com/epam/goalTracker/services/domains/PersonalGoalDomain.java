@@ -22,6 +22,7 @@ public class PersonalGoalDomain {
     private long id;
     private String name;
     private String description;
+    private long days;
     private Season season;
     private Date startDate;
     private Date endDate;

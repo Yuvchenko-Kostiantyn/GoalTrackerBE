@@ -27,4 +27,10 @@ public interface PersonalGoalRepository extends JpaRepository<PersonalGoalEntity
             value = "SELECT * FROM personal_goals p WHERE p.users_id = ?1",
             nativeQuery = true)
     List<PersonalGoalEntity> findUserPersonalGoals(long userId);
+
+    @Query(
+            value = "SELECT * FROM personal_goals p WHERE p.users_id = ?1 and p.id = ?2",
+            nativeQuery = true)
+    PersonalGoalEntity findUserPersonalGoal(long userId, long personalGoalId);
+
 }
