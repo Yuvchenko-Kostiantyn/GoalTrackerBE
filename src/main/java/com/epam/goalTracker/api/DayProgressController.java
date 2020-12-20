@@ -67,7 +67,7 @@ public class DayProgressController {
 
         return ResponseEntity.ok(dayProgressResponseModels);
     }
-    @GetMapping(path = "/delete",produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping
     public ResponseEntity deleteDayProgressById(@RequestParam long id) {
         dayProgressService.deleteDayProgressByID(id);
         return ResponseEntity.ok(HttpStatus.OK);
