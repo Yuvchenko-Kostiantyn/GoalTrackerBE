@@ -4,26 +4,28 @@ import com.epam.goalTracker.exceptions.ErrorMessages;
 import com.epam.goalTracker.exceptions.UserNotFoundException;
 import com.epam.goalTracker.repositories.GlobalGoalRepository;
 import com.epam.goalTracker.repositories.PersonalGoalRepository;
+import com.epam.goalTracker.repositories.PersonalGoalStatusWrapper;
 import com.epam.goalTracker.repositories.UserRepository;
 import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
 import com.epam.goalTracker.repositories.entities.PersonalGoalEntity;
 import com.epam.goalTracker.repositories.entities.UserEntity;
 import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
-import com.epam.goalTracker.repositories.entities.enums.Season;
 import com.epam.goalTracker.services.GlobalGoalService;
 import com.epam.goalTracker.services.PersonalGoalService;
 import com.epam.goalTracker.services.UserService;
-import com.epam.goalTracker.services.domains.GlobalGoalDomain;
 import com.epam.goalTracker.services.domains.PersonalGoalDomain;
-import com.epam.goalTracker.services.domains.UserDomain;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Personal Goal service implementation
@@ -94,11 +96,7 @@ public class PersonalGoalServiceImpl implements PersonalGoalService {
     public PersonalGoalDomain findPersonalGoal(long userId, long personalGoalId) {
         PersonalGoalEntity personalGoalEntity =
                 personalGoalRepository.findUserPersonalGoal(userId, personalGoalId);
-        PersonalGoalDomain personalGoalDomain = modelMapper.map(personalGoalEntity, PersonalGoalDomain.class);
-        personalGoalDomain.setName(personalGoalEntity.getGlobalGoal().getName());
-        personalGoalDomain.setDescription(personalGoalEntity.getGlobalGoal().getDescription());
-        personalGoalDomain.setSeason(personalGoalEntity.getGlobalGoal().getSeason());
-        personalGoalDomain.setDays(personalGoalEntity.getGlobalGoal().getDays());
+        PersonalGoalDomain personalGoalDomain = getPersonalGoalDomain(personalGoalEntity);
         return personalGoalDomain;
     }
 
@@ -109,16 +107,42 @@ public class PersonalGoalServiceImpl implements PersonalGoalService {
 
     @Override
     public List<PersonalGoalDomain> findPersonalGoalsByStatus(long userId, String goalStatus) {
-        return null;
+        List<PersonalGoalEntity> goalList =
+                personalGoalRepository.findUserPersonalGoalsByStatus(userId, goalStatus.toUpperCase());
+        return goalList.stream().map(this::getPersonalGoalDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Map<PersonalGoalStatus, Integer> findPersonalGoalsByStatus(long userId) {
-        return null;
+    public Map<PersonalGoalStatus, Integer> groupPersonalGoalsByStatuses(long userId) {
+//        List<PersonalGoalStatusWrapper> statusWrappers =
+//                personalGoalRepository.obtainMapOfPersonalGoalStatus(userId);
+        Map<PersonalGoalStatus, Integer> goalStatusesMap = new HashMap<>();
+        findAllPersonalGoals(userId).stream().forEach(item -> {
+            if (goalStatusesMap.containsKey(item.getStatus())) {
+                goalStatusesMap.replace(item.getStatus(), goalStatusesMap.get(item.getStatus()) + 1);
+            } else {
+                goalStatusesMap.put(item.getStatus(), 1);
+            }
+        });
+        return goalStatusesMap;
+
     }
 
     @Override
     public List<PersonalGoalDomain> findAllPersonalGoals(long userId) {
-        return null;
+        List<PersonalGoalEntity> goalList =
+                personalGoalRepository.findUserPersonalGoals(userId);
+        return goalList.stream().map(this::getPersonalGoalDomain)
+                .collect(Collectors.toList());
+    }
+
+    private PersonalGoalDomain getPersonalGoalDomain(PersonalGoalEntity personalGoalEntity) {
+        PersonalGoalDomain personalGoalDomain = modelMapper.map(personalGoalEntity, PersonalGoalDomain.class);
+        personalGoalDomain.setName(personalGoalEntity.getGlobalGoal().getName());
+        personalGoalDomain.setDescription(personalGoalEntity.getGlobalGoal().getDescription());
+        personalGoalDomain.setSeason(personalGoalEntity.getGlobalGoal().getSeason());
+        personalGoalDomain.setDays(personalGoalEntity.getGlobalGoal().getDays());
+        return personalGoalDomain;
     }
 }
