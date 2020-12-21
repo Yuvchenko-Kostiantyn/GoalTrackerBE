@@ -13,4 +13,6 @@ public final class ErrorMessages {
     public static final String NO_GLOBAL_GOAL_FOUND = "Global goal with provided id is not found";
     public static final String NO_DAY_PROGRESS_FOUND = "Day progress with provided id is not found";
     public static final String NO_PERSONAL_GOAL_FOUND = "Personal goal with provided id is not found";
+    public static final String NO_GLOBAL_BADGE_FOUND = "Global badge with provided id is not found";
+
 }

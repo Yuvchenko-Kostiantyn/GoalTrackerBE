@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +30,7 @@ public class DayProgressController {
 
     private final ModelMapper modelMapper;
     private final DayProgressService dayProgressService;
+//    private final Map<Long, Map<Long, Boolean>> map;
 
     @Autowired
     public DayProgressController(ModelMapper modelMapper, DayProgressService personalGoalService) {
@@ -42,6 +44,14 @@ public class DayProgressController {
         DayProgressDomain dayProgressDomain = modelMapper.map(requestDto, DayProgressDomain.class);
         DayProgressDomain createdDayProgressDomain =
                 dayProgressService.createDayProgressDto(requestDto.getPersonalGoalid(), dayProgressDomain);
+
+        // Todo 1. countAllDayProgeressesOfPersonalGoal(persgoalId) -> long dayCounts
+        // 2. === days field of global goal => change status, criteria exception
+        // 3. === dayCounts => rewarding
+        // 3.1. getAllBadges(userId, personalGoalId) => list of personal badges
+        // 3.2 contain ^ list of globalBadges => allowed badges
+        // 3.3 dayCounts ==== allowed badges
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
