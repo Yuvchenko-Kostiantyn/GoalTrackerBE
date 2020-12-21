@@ -12,13 +12,14 @@ import lombok.ToString;
  */
 @Data
 @ToString
-public class PersonalBadgeRequestModel {
+public class PersonalBadgeModel {
 
     private String name;
     private String url;
     private long scores;
     private long globalBadgeId;
     private long personalGoalId;
+    private String personalGoalName;
     private long userId;
 
 }

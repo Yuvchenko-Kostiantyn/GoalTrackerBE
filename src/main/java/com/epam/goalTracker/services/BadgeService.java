@@ -17,5 +17,7 @@ public interface BadgeService {
 
     PersonalBadgeDomain findBadgeDomainById(long personalGoalId, long badgeId);
 
-    List<PersonalBadgeDomain> findBabgeDomains(long personalGoalId);
+    List<PersonalBadgeDomain> findBabgeDomainsByPersonalGoalId(long personalGoalId);
+
+    List<PersonalBadgeDomain> findBabgeDomainsByUserId(long userId);
 }

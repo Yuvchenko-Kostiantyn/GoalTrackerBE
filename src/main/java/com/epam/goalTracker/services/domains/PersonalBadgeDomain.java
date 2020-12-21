@@ -24,6 +24,7 @@ public class PersonalBadgeDomain {
     private long scores;
     private long globalBadgeId;
     private long personalGoalId;
+    private String personalGoalName;
     private long userId;
 
 }
