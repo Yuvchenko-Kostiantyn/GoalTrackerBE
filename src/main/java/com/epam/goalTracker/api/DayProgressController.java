@@ -41,7 +41,7 @@ public class DayProgressController {
 
         DayProgressDomain dayProgressDomain = modelMapper.map(requestDto, DayProgressDomain.class);
         DayProgressDomain createdDayProgressDomain =
-                dayProgressService.createDayProgressDto(requestDto.getPersonalGoalid(), dayProgressDomain);
+                dayProgressService.createDayProgressDto(requestDto.getPersonalGoalId(), dayProgressDomain);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -49,7 +49,7 @@ public class DayProgressController {
     public ResponseEntity getDayProgress(@RequestParam long id) {
         DayProgressDomain dayProgressDomain = dayProgressService.findDayProgressDto(id);
         DayProgressResponseModel responseModel = modelMapper.map(dayProgressDomain, DayProgressResponseModel.class);
-        responseModel.setPersonalGoalid(dayProgressDomain.getPersonalGoal().getId());
+        responseModel.setPersonalGoalId(dayProgressDomain.getPersonalGoal().getId());
         return ResponseEntity.ok(responseModel);
     }
 
@@ -59,7 +59,7 @@ public class DayProgressController {
         List<DayProgressResponseModel> dayProgressResponseModels = dayProgressDomains.stream()
                 .map(dayProgressDomain -> modelMapper.map(dayProgressDomain, DayProgressResponseModel.class))
                 .collect(Collectors.toList());
-        dayProgressResponseModels.forEach(dayProgressResponseModel -> dayProgressResponseModel.setPersonalGoalid(personalGoalId));
+        dayProgressResponseModels.forEach(dayProgressResponseModel -> dayProgressResponseModel.setPersonalGoalId(personalGoalId));
 
         return ResponseEntity.ok(dayProgressResponseModels);
     }

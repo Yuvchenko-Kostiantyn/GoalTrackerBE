@@ -50,13 +50,10 @@ public class GlobalGoalController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllGlobalGoalsBySeason(@RequestParam String season) {
-        System.out.println(season + " 1");
         List<GlobalGoalDomain> globalGoalDomainList = globalGoalService.findAllGlobalDomainBySeason(season);
-        System.out.println(globalGoalDomainList + " 2");
         List<GlobalGoalResponseModel> globalGoalResponseModels = globalGoalDomainList.stream()
                 .map(globalGoalDomain -> modelMapper.map(globalGoalDomain, GlobalGoalResponseModel.class))
                 .collect(Collectors.toList());
-        System.out.println(globalGoalResponseModels + " 3");
         return ResponseEntity.ok(globalGoalResponseModels);
     }
 
