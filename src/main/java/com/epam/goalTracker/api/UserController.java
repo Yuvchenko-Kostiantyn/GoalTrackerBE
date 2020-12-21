@@ -33,7 +33,6 @@ public class UserController {
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getUser(@PathVariable long id) {
-
         UserDomain user = userService.findUserById(id);
         UserResponseModel responseModel = modelMapper.map(user, UserResponseModel.class);
         return ResponseEntity.ok(responseModel);

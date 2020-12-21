@@ -71,8 +71,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDomain findUserById(long id) {
+        log.info("Getting a person by id: " + id);
         UserEntity userEntity = getUserEntityById(id);
-        System.out.println("user find : " + userEntity.getPersonalGoals());
         return modelMapper.map(userEntity, UserDomain.class);
     }
 
