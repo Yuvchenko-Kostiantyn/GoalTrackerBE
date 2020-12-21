@@ -41,8 +41,9 @@ public class DayProgressController {
     public ResponseEntity create(@RequestBody DayProgressRequestModel requestDto) {
 
         DayProgressDomain dayProgressDomain = modelMapper.map(requestDto, DayProgressDomain.class);
-        DayProgressDomain createdDayProgressDomain =
-                dayProgressService.createDayProgressDto(requestDto.getPersonalGoalId(), dayProgressDomain);
+//        System.out.println(isFinished(dayProgressDomain));
+//        DayProgressDomain createdDayProgressDomain =
+//                dayProgressService.createDayProgressDto(requestDto.getPersonalGoalId(), dayProgressDomain);
 
         // Todo 1. countAllDayProgeressesOfPersonalGoal(persgoalId) -> long dayCounts
         // 2. === days field of global goal => change status, criteria exception
@@ -51,7 +52,7 @@ public class DayProgressController {
         // 3.2 contain ^ list of globalBadges => allowed badges
         // 3.3 dayCounts ==== allowed badges
 
-        dayProgressService.createDayProgressDto(requestDto.getPersonalGoalId(), dayProgressDomain);
+        dayProgressService.createDayProgressDto(requestDto.getPersonalGoalid(), dayProgressDomain);
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -60,7 +61,7 @@ public class DayProgressController {
     public ResponseEntity getDayProgress(@RequestParam long id) {
         DayProgressDomain dayProgressDomain = dayProgressService.findDayProgressDto(id);
         DayProgressResponseModel responseModel = modelMapper.map(dayProgressDomain, DayProgressResponseModel.class);
-        responseModel.setPersonalGoalId(dayProgressDomain.getPersonalGoal().getId());
+        responseModel.setPersonalGoalid(dayProgressDomain.getPersonalGoal().getId());
         return ResponseEntity.ok(responseModel);
     }
 
@@ -70,7 +71,7 @@ public class DayProgressController {
         List<DayProgressResponseModel> dayProgressResponseModels = dayProgressDomains.stream()
                 .map(dayProgressDomain -> modelMapper.map(dayProgressDomain, DayProgressResponseModel.class))
                 .collect(Collectors.toList());
-        dayProgressResponseModels.forEach(dayProgressResponseModel -> dayProgressResponseModel.setPersonalGoalId(personalGoalId));
+        dayProgressResponseModels.forEach(dayProgressResponseModel -> dayProgressResponseModel.setPersonalGoalid(personalGoalId));
 
         return ResponseEntity.ok(dayProgressResponseModels);
     }
@@ -80,5 +81,7 @@ public class DayProgressController {
         dayProgressService.deleteDayProgressByID(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+
 
 }
