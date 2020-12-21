@@ -19,5 +19,5 @@ public class DayProgressResponseModel {
     private long id;
     private Date date;
     private String url;
-    private long personalGoalId;
+    private long personalGoalid;
 }
