@@ -19,10 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -82,6 +79,8 @@ public class PersonalGoalServiceImpl implements PersonalGoalService {
                     .personalGoals(new ArrayList<>())
                     .build();
         }
+        personalGoalEntity.setDayProgresses(new ArrayList<>());
+        personalGoalEntity.setPausedDate(new Date());
         personalGoalEntity.setStatus(PersonalGoalStatus.PLANNED);
         globalGoalEntity.getPersonalGoals().add(personalGoalEntity);
         personalGoalEntity.setGlobalGoal(globalGoalEntity);
