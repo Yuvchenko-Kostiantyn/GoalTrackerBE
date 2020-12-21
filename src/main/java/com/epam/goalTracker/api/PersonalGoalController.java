@@ -2,8 +2,6 @@ package com.epam.goalTracker.api;
 
 import com.epam.goalTracker.api.models.PersonalGoalRequestModel;
 import com.epam.goalTracker.api.models.PersonalGoalResponseModel;
-import com.epam.goalTracker.repositories.PersonalGoalStatusWrapper;
-import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
 import com.epam.goalTracker.services.PersonalGoalService;
 import com.epam.goalTracker.services.domains.PersonalGoalDomain;
 import org.modelmapper.ModelMapper;
@@ -29,8 +27,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/personal-goal")
 public class PersonalGoalController {
 
-    private ModelMapper modelMapper;
-    private PersonalGoalService personalGoalService;
+    private final ModelMapper modelMapper;
+    private final PersonalGoalService personalGoalService;
 
     @Autowired
     public PersonalGoalController(ModelMapper modelMapper, PersonalGoalService personalGoalService) {
@@ -49,8 +47,15 @@ public class PersonalGoalController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity obtainPersonalGoal(@RequestParam long userId,
-                                                    @RequestParam long personalGoalId) {
+                                             @RequestParam long personalGoalId) {
         PersonalGoalDomain personalGoalDomain = personalGoalService.findPersonalGoal(userId, personalGoalId);
+        return ResponseEntity.ok(obtainPersonalGoalResponseModel(personalGoalDomain));
+    }
+
+    @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deletePersonalGoal(@RequestParam long userId,
+                                             @RequestParam long personalGoalId) {
+        PersonalGoalDomain personalGoalDomain = personalGoalService.deletePersonalGoal(userId, personalGoalId);
         return ResponseEntity.ok(obtainPersonalGoalResponseModel(personalGoalDomain));
     }
 

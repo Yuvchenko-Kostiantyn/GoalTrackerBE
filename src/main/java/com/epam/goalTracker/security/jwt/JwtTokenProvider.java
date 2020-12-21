@@ -1,9 +1,9 @@
 package com.epam.goalTracker.security.jwt;
 
-import com.epam.goalTracker.services.domains.JwtTokenBlackListDomain;
-import com.epam.goalTracker.repositories.entities.RoleEntity;
 import com.epam.goalTracker.exceptions.JwtAuthenticationException;
+import com.epam.goalTracker.repositories.entities.RoleEntity;
 import com.epam.goalTracker.services.UserService;
+import com.epam.goalTracker.services.domains.JwtTokenBlackListDomain;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

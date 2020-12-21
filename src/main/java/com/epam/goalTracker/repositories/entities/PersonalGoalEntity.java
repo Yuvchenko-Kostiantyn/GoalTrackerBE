@@ -25,16 +25,16 @@ public class PersonalGoalEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="start_date")
+    @Column(name = "start_date")
     private Date startDate;
 
-    @Column(name="end_date")
+    @Column(name = "end_date")
     private Date endDate;
 
-    @Column(name="pause_date")
+    @Column(name = "pause_date")
     private Date pausedDate;
 
-    @Column(name="status")
+    @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     private PersonalGoalStatus status;
 

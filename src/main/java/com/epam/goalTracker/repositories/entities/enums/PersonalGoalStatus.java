@@ -9,6 +9,6 @@ package com.epam.goalTracker.repositories.entities.enums;
  */
 public enum PersonalGoalStatus {
 
-    PLANNED, IN_PROGRESS, FINISHED, DROPPED;
+    PLANNED, IN_PROGRESS, FINISHED, DROPPED
 
 }

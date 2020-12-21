@@ -1,8 +1,7 @@
 package com.epam.goalTracker.services;
 
-import com.epam.goalTracker.repositories.PersonalGoalStatusWrapper;
-import com.epam.goalTracker.services.domains.PersonalGoalDomain;
 import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
+import com.epam.goalTracker.services.domains.PersonalGoalDomain;
 
 import java.util.List;
 import java.util.Map;

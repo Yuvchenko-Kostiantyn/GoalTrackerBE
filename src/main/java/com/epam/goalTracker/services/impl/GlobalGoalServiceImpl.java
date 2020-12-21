@@ -1,24 +1,17 @@
 package com.epam.goalTracker.services.impl;
 
-import com.epam.goalTracker.exceptions.UserConflictException;
-import com.epam.goalTracker.repositories.entities.RoleEntity;
-import com.epam.goalTracker.repositories.entities.UserEntity;
-import com.epam.goalTracker.repositories.entities.enums.Role;
-import com.epam.goalTracker.services.domains.GlobalGoalDomain;
-import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
-import com.epam.goalTracker.repositories.entities.enums.Season;
 import com.epam.goalTracker.exceptions.ErrorMessages;
 import com.epam.goalTracker.exceptions.GlobalGoalNotFoundException;
 import com.epam.goalTracker.repositories.GlobalGoalRepository;
+import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
+import com.epam.goalTracker.repositories.entities.enums.Season;
 import com.epam.goalTracker.services.GlobalGoalService;
-import com.epam.goalTracker.services.domains.UserDomain;
+import com.epam.goalTracker.services.domains.GlobalGoalDomain;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,7 +68,9 @@ public class GlobalGoalServiceImpl implements GlobalGoalService {
     @Override
     public List<GlobalGoalDomain> findAllGlobalDomain() {
         log.info("Getting a list of all global goals");
-        return globalGoalRepository.findAll().stream().map(globalGoalEntity -> modelMapper.map(globalGoalEntity, GlobalGoalDomain.class))
+        return globalGoalRepository.findAll().stream()
+                .filter(globalGoalEntity -> !globalGoalEntity.getIspersonal())
+                .map(globalGoalEntity -> modelMapper.map(globalGoalEntity, GlobalGoalDomain.class))
                 .collect(Collectors.toList());
     }
 

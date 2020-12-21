@@ -7,7 +7,7 @@ package com.epam.goalTracker.exceptions;
  * @version 1.0
  * @date 19.12.2020 12:15
  */
-public class DayProgressServiceException extends RuntimeException{
+public class DayProgressServiceException extends RuntimeException {
     public DayProgressServiceException(String message) {
         super(message);
     }

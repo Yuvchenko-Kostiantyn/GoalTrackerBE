@@ -21,8 +21,8 @@ import java.io.IOException;
  */
 public class JwtTokenFilter extends GenericFilterBean {
 
-    private JwtTokenProvider jwtTokenProvider;
-    private RestAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
 
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider, RestAuthenticationEntryPoint authenticationEntryPoint) {
         this.jwtTokenProvider = jwtTokenProvider;

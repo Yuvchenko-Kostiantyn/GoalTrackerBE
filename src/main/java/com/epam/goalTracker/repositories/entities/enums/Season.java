@@ -7,6 +7,6 @@ package com.epam.goalTracker.repositories.entities.enums;
  */
 public enum Season {
 
-    ALL_YEAR, WINTER, SUMMER, SPRING, AUTUMN;
+    ALL_YEAR, WINTER, SUMMER, SPRING, AUTUMN
 
 }

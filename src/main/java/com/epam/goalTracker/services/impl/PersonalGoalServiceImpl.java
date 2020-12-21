@@ -1,10 +1,10 @@
 package com.epam.goalTracker.services.impl;
 
 import com.epam.goalTracker.exceptions.ErrorMessages;
+import com.epam.goalTracker.exceptions.PersonalGoalNotFoundException;
 import com.epam.goalTracker.exceptions.UserNotFoundException;
 import com.epam.goalTracker.repositories.GlobalGoalRepository;
 import com.epam.goalTracker.repositories.PersonalGoalRepository;
-import com.epam.goalTracker.repositories.PersonalGoalStatusWrapper;
 import com.epam.goalTracker.repositories.UserRepository;
 import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
 import com.epam.goalTracker.repositories.entities.PersonalGoalEntity;
@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.groupingBy;
-
 /**
  * Personal Goal service implementation
  *
@@ -39,12 +37,12 @@ import static java.util.stream.Collectors.groupingBy;
 @Slf4j
 public class PersonalGoalServiceImpl implements PersonalGoalService {
 
-    private PersonalGoalRepository personalGoalRepository;
-    private UserService userService;
-    private GlobalGoalService globalGoalService;
-    private ModelMapper modelMapper;
-    private GlobalGoalRepository globalGoalRepository;
-    private UserRepository userRepository;
+    private final PersonalGoalRepository personalGoalRepository;
+    private final UserService userService;
+    private final GlobalGoalService globalGoalService;
+    private final ModelMapper modelMapper;
+    private final GlobalGoalRepository globalGoalRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public PersonalGoalServiceImpl(PersonalGoalRepository personalGoalRepository, UserService userService,
@@ -78,7 +76,7 @@ public class PersonalGoalServiceImpl implements PersonalGoalService {
             globalGoalEntity = GlobalGoalEntity.builder()
                     .name(personalGoalDomain.getName())
                     .days(differenceInDays)
-                    .personal(true)
+                    .ispersonal(true)
                     .description(personalGoalDomain.getDescription())
                     .season(personalGoalDomain.getSeason())
                     .personalGoals(new ArrayList<>())
@@ -96,13 +94,21 @@ public class PersonalGoalServiceImpl implements PersonalGoalService {
     public PersonalGoalDomain findPersonalGoal(long userId, long personalGoalId) {
         PersonalGoalEntity personalGoalEntity =
                 personalGoalRepository.findUserPersonalGoal(userId, personalGoalId);
-        PersonalGoalDomain personalGoalDomain = getPersonalGoalDomain(personalGoalEntity);
-        return personalGoalDomain;
+        if (personalGoalEntity == null) {
+            throw new PersonalGoalNotFoundException(ErrorMessages.NO_PERSONAL_GOAL_FOUND);
+        }
+        return getPersonalGoalDomain(personalGoalEntity);
     }
 
     @Override
     public PersonalGoalDomain deletePersonalGoal(long userId, long personalGoalId) {
-        return null;
+        PersonalGoalEntity personalGoalEntity =
+                personalGoalRepository.findUserPersonalGoal(userId, personalGoalId);
+        if (personalGoalEntity == null) {
+            throw new PersonalGoalNotFoundException(ErrorMessages.NO_PERSONAL_GOAL_FOUND);
+        }
+        personalGoalRepository.delete(personalGoalEntity);
+        return getPersonalGoalDomain(personalGoalEntity);
     }
 
     @Override

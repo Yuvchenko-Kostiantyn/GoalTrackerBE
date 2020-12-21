@@ -1,8 +1,6 @@
 package com.epam.goalTracker.repositories;
 
 import com.epam.goalTracker.repositories.entities.DayProgressEntity;
-import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
-import com.epam.goalTracker.repositories.entities.enums.Season;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

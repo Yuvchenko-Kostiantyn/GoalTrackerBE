@@ -1,17 +1,17 @@
 package com.epam.goalTracker.api;
 
 
-import com.epam.goalTracker.services.domains.JwtTokenBlackListDomain;
-import com.epam.goalTracker.services.domains.RoleDomain;
-import com.epam.goalTracker.services.domains.UserDomain;
-import com.epam.goalTracker.repositories.entities.RoleEntity;
-import com.epam.goalTracker.repositories.entities.UserEntity;
-import com.epam.goalTracker.repositories.entities.enums.Role;
 import com.epam.goalTracker.api.models.AuthRequestModel;
 import com.epam.goalTracker.api.models.AuthResponseModel;
 import com.epam.goalTracker.api.models.UserRequestModel;
+import com.epam.goalTracker.repositories.entities.RoleEntity;
+import com.epam.goalTracker.repositories.entities.UserEntity;
+import com.epam.goalTracker.repositories.entities.enums.Role;
 import com.epam.goalTracker.security.jwt.JwtTokenProvider;
 import com.epam.goalTracker.services.UserService;
+import com.epam.goalTracker.services.domains.JwtTokenBlackListDomain;
+import com.epam.goalTracker.services.domains.RoleDomain;
+import com.epam.goalTracker.services.domains.UserDomain;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +41,7 @@ public class AuthenticationController {
 
     private final UserService userService;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager,
@@ -54,7 +54,7 @@ public class AuthenticationController {
     }
 
     @GetMapping(path = "/signout")
-    public ResponseEntity processToken (@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) {
+    public ResponseEntity processToken(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) {
         JwtTokenBlackListDomain jwtTokenBlackListDomain = userService.findToken(token);
         if (jwtTokenBlackListDomain != null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

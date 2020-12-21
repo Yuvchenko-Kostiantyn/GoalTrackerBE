@@ -2,13 +2,8 @@ package com.epam.goalTracker.api;
 
 import com.epam.goalTracker.api.models.DayProgressRequestModel;
 import com.epam.goalTracker.api.models.DayProgressResponseModel;
-import com.epam.goalTracker.api.models.GlobalGoalResponseModel;
-import com.epam.goalTracker.api.models.PersonalGoalRequestModel;
 import com.epam.goalTracker.services.DayProgressService;
-import com.epam.goalTracker.services.PersonalGoalService;
 import com.epam.goalTracker.services.domains.DayProgressDomain;
-import com.epam.goalTracker.services.domains.GlobalGoalDomain;
-import com.epam.goalTracker.services.domains.PersonalGoalDomain;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +27,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/day-progress")
 public class DayProgressController {
 
-    private ModelMapper modelMapper;
-    private DayProgressService dayProgressService;
+    private final ModelMapper modelMapper;
+    private final DayProgressService dayProgressService;
 
     @Autowired
     public DayProgressController(ModelMapper modelMapper, DayProgressService personalGoalService) {
@@ -49,6 +44,7 @@ public class DayProgressController {
                 dayProgressService.createDayProgressDto(requestDto.getPersonalGoalid(), dayProgressDomain);
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getDayProgress(@RequestParam long id) {
         DayProgressDomain dayProgressDomain = dayProgressService.findDayProgressDto(id);
@@ -57,7 +53,7 @@ public class DayProgressController {
         return ResponseEntity.ok(responseModel);
     }
 
-    @GetMapping(path = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllDayProgressesByPersonalGoal(@RequestParam long personalGoalId) {
         List<DayProgressDomain> dayProgressDomains = dayProgressService.findAllDayProgresses(personalGoalId);
         List<DayProgressResponseModel> dayProgressResponseModels = dayProgressDomains.stream()
@@ -67,6 +63,7 @@ public class DayProgressController {
 
         return ResponseEntity.ok(dayProgressResponseModels);
     }
+
     @DeleteMapping
     public ResponseEntity deleteDayProgressById(@RequestParam long id) {
         dayProgressService.deleteDayProgressByID(id);

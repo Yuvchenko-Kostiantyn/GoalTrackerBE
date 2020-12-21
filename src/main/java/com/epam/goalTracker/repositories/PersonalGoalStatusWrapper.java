@@ -1,10 +1,7 @@
 package com.epam.goalTracker.repositories;
 
 import com.epam.goalTracker.repositories.entities.enums.PersonalGoalStatus;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 

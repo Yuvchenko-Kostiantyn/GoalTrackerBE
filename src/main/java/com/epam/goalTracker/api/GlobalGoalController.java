@@ -1,8 +1,8 @@
 package com.epam.goalTracker.api;
 
-import com.epam.goalTracker.services.domains.GlobalGoalDomain;
 import com.epam.goalTracker.api.models.GlobalGoalResponseModel;
 import com.epam.goalTracker.services.GlobalGoalService;
+import com.epam.goalTracker.services.domains.GlobalGoalDomain;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/global-goal")
 public class GlobalGoalController {
 
-    private GlobalGoalService globalGoalService;
-    private ModelMapper modelMapper;
+    private final GlobalGoalService globalGoalService;
+    private final ModelMapper modelMapper;
 
     public GlobalGoalController(GlobalGoalService globalGoalService, ModelMapper modelMapper) {
         this.globalGoalService = globalGoalService;

@@ -37,7 +37,7 @@ public class GlobalGoalEntity {
     private long days;
 
     @Column(columnDefinition = "boolean default false")
-    private Boolean personal;
+    private Boolean ispersonal;
 
     @Column
     @Enumerated(value = EnumType.STRING)

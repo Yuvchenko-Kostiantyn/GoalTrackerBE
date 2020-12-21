@@ -29,11 +29,13 @@ public class AppExceptionHandler {
         ErrorMessage errorMessage = new ErrorMessage(new Date(), exception.getMessage());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(value = {GlobalGoalNotFoundException.class})
     public ResponseEntity<Object> handleGlobalGoalNotFoundException(GlobalGoalNotFoundException exception) {
         ErrorMessage errorMessage = new ErrorMessage(new Date(), exception.getMessage());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(value = {DayProgressNotFoundException.class})
     public ResponseEntity<Object> handleDayProgressNotFoundException(DayProgressNotFoundException exception) {
         ErrorMessage errorMessage = new ErrorMessage(new Date(), exception.getMessage());

@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 @Repository
-public interface GlobalGoalRepository extends JpaRepository<GlobalGoalEntity, Long>{
+public interface GlobalGoalRepository extends JpaRepository<GlobalGoalEntity, Long> {
 
     List<GlobalGoalEntity> findBySeason(Season season);
 }

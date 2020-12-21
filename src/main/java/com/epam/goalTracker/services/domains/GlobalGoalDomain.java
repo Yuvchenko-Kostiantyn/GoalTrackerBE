@@ -1,6 +1,5 @@
 package com.epam.goalTracker.services.domains;
 
-import com.epam.goalTracker.repositories.entities.PersonalGoalEntity;
 import com.epam.goalTracker.repositories.entities.enums.Season;
 import lombok.Data;
 import lombok.ToString;

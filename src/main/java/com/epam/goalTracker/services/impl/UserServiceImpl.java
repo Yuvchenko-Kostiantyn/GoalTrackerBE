@@ -1,19 +1,19 @@
 package com.epam.goalTracker.services.impl;
 
-import com.epam.goalTracker.services.domains.JwtTokenBlackListDomain;
-import com.epam.goalTracker.services.domains.RoleDomain;
-import com.epam.goalTracker.services.domains.UserDomain;
-import com.epam.goalTracker.repositories.entities.JwtTokenBlackListEntity;
-import com.epam.goalTracker.repositories.entities.RoleEntity;
-import com.epam.goalTracker.repositories.entities.UserEntity;
-import com.epam.goalTracker.repositories.entities.enums.Role;
 import com.epam.goalTracker.exceptions.ErrorMessages;
 import com.epam.goalTracker.exceptions.UserConflictException;
 import com.epam.goalTracker.exceptions.UserNotFoundException;
 import com.epam.goalTracker.repositories.JwtTokenBlackListRepository;
 import com.epam.goalTracker.repositories.RoleRepository;
 import com.epam.goalTracker.repositories.UserRepository;
+import com.epam.goalTracker.repositories.entities.JwtTokenBlackListEntity;
+import com.epam.goalTracker.repositories.entities.RoleEntity;
+import com.epam.goalTracker.repositories.entities.UserEntity;
+import com.epam.goalTracker.repositories.entities.enums.Role;
 import com.epam.goalTracker.services.UserService;
+import com.epam.goalTracker.services.domains.JwtTokenBlackListDomain;
+import com.epam.goalTracker.services.domains.RoleDomain;
+import com.epam.goalTracker.services.domains.UserDomain;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,7 +137,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDomain> findAll() {
         log.info("Getting a list of all users");
-        return userRepository.findAll().stream().map(userEntity -> modelMapper.map(userEntity, UserDomain.class))
+        return userRepository.findAll().stream()
+                .map(userEntity -> modelMapper.map(userEntity, UserDomain.class))
                 .collect(Collectors.toList());
     }
 

@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
         configuration.setAllowCredentials(true);
         //the below three lines will add the relevant CORS response headers
         configuration.setAllowedOrigins(Arrays.asList("*"));
@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(SIGN_IN,SIGN_UP,HOME,"/gettoken", LOG_OUT).permitAll()
+                .antMatchers(SIGN_IN, SIGN_UP, HOME, "/gettoken", LOG_OUT).permitAll()
 //                .antMatchers(ADMIN).hasRole(Role.ADMIN.name())
 //                .antMatchers(USER_PROFILE).hasRole(Role.USER.name())
                 .anyRequest().authenticated()

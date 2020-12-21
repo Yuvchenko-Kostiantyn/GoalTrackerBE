@@ -14,7 +14,6 @@ import java.util.List;
 public interface UserService {
 
     /**
-     * 
      * @param userDomain user data
      * @return user
      */

@@ -3,6 +3,7 @@ package com.epam.goalTracker.api.models;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.Date;
 
 /**

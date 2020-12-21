@@ -1,9 +1,9 @@
 package com.epam.goalTracker.api;
 
-import com.epam.goalTracker.services.domains.UserDomain;
 import com.epam.goalTracker.api.models.UserRequestModel;
 import com.epam.goalTracker.api.models.UserResponseModel;
 import com.epam.goalTracker.services.UserService;
+import com.epam.goalTracker.services.domains.UserDomain;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
-    private ModelMapper modelMapper;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public UserController(UserService userService, ModelMapper modelMapper) {

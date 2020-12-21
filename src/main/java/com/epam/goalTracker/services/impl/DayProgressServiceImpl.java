@@ -2,17 +2,12 @@ package com.epam.goalTracker.services.impl;
 
 import com.epam.goalTracker.exceptions.DayProgressNotFoundException;
 import com.epam.goalTracker.exceptions.ErrorMessages;
-import com.epam.goalTracker.exceptions.GlobalGoalNotFoundException;
 import com.epam.goalTracker.repositories.DayProgressRepository;
 import com.epam.goalTracker.repositories.PersonalGoalRepository;
 import com.epam.goalTracker.repositories.entities.DayProgressEntity;
-import com.epam.goalTracker.repositories.entities.GlobalGoalEntity;
 import com.epam.goalTracker.repositories.entities.PersonalGoalEntity;
-import com.epam.goalTracker.repositories.entities.enums.Season;
 import com.epam.goalTracker.services.DayProgressService;
 import com.epam.goalTracker.services.domains.DayProgressDomain;
-import com.epam.goalTracker.services.domains.GlobalGoalDomain;
-import com.epam.goalTracker.services.domains.PersonalGoalDomain;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +27,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DayProgressServiceImpl implements DayProgressService {
 
-    private ModelMapper modelMapper;
-    private PersonalGoalRepository personalGoalRepository;
-    private DayProgressRepository dayProgressRepository;
+    private final ModelMapper modelMapper;
+    private final PersonalGoalRepository personalGoalRepository;
+    private final DayProgressRepository dayProgressRepository;
 
     @Autowired
     public DayProgressServiceImpl(ModelMapper modelMapper, PersonalGoalRepository personalGoalRepository, DayProgressRepository dayProgressRepository) {

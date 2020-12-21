@@ -1,7 +1,7 @@
 package com.epam.goalTracker.security;
 
-import com.epam.goalTracker.repositories.entities.UserEntity;
 import com.epam.goalTracker.repositories.UserRepository;
+import com.epam.goalTracker.repositories.entities.UserEntity;
 import com.epam.goalTracker.security.jwt.JwtUser;
 import com.epam.goalTracker.security.jwt.JwtUserFactory;
 import org.modelmapper.ModelMapper;
