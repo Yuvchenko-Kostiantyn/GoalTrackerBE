@@ -19,6 +19,6 @@ public class DayProgressRequestModel {
 
     private Date date;
     private String url;
-    private long personalGoalid;
+    private long personalGoalId;
 
 }
