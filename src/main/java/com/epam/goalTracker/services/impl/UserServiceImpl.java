@@ -97,7 +97,9 @@ public class UserServiceImpl implements UserService {
         userEntity.setGender(userDomain.getGender());
         userEntity.setBirthdate(userDomain.getBirthdate());
         userEntity.setLocation(userDomain.getLocation());
-        userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(userDomain.getPassword()));
+        if (userDomain.getPassword() != null && !userDomain.getPassword().isEmpty()) {
+            userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(userDomain.getPassword()));
+        }
         if (userDomain.getRoles() != null) {
             List<RoleEntity> roleList = new ArrayList<>();
             roleList.add(roleRepository.findByName(ROLE_USER));
