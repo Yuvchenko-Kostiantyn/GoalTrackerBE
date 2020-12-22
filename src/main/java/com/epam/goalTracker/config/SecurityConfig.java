@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String SIGN_UP = "/registration";
     private static final String SIGN_IN = "/login";
     private static final String LOG_OUT = "/signout";
+    private static final String TOKEN_UPDATE = "/token-update";
     private static final String ADMIN = "/admin/**";
     private static final String USER_PROFILE = "/user/**";
     private static final String HOME = "/";
@@ -71,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(SIGN_IN, SIGN_UP, HOME, "/gettoken", LOG_OUT).permitAll()
+                .antMatchers(SIGN_IN, SIGN_UP, HOME, TOKEN_UPDATE, LOG_OUT).permitAll()
 //                .antMatchers(ADMIN).hasRole(Role.ADMIN.name())
 //                .antMatchers(USER_PROFILE).hasRole(Role.USER.name())
                 .anyRequest().authenticated()

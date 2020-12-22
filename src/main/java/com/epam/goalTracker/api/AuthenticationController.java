@@ -63,18 +63,6 @@ public class AuthenticationController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping(path = "/gettoken")
-    public ResponseEntity logOut(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) {
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Baeldung-Example-Header",
-                "Value-ResponseEntityBuilderWithHttpHeaders");
-
-        return ResponseEntity.ok()
-                .headers(responseHeaders)
-                .body("Response with header using ResponseEntity");
-    }
-
     @PostMapping("/registration")
     public ResponseEntity register(@RequestBody UserRequestModel userRequestModel) {
         //TODO check validation of userRequestModel fields
@@ -123,6 +111,33 @@ public class AuthenticationController {
                     .body(responseModel);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");
+        }
+    }
+
+    @PostMapping("/token-update")
+    public ResponseEntity updateToken(@RequestBody  AuthRequestModel requestDto) {
+        try {
+            UserDomain user = userService.findUserByEmail(requestDto.getEmail());
+            UserEntity foundUser = modelMapper.map(user, UserEntity.class);
+            AuthResponseModel responseModel = new AuthResponseModel();
+            responseModel.setEmail(foundUser.getEmail());
+            responseModel.setId(foundUser.getId());
+            String token = jwtTokenProvider.createToken(requestDto.getEmail(),
+                    (List<RoleEntity>) foundUser.getRoles());
+            responseModel.setToken(token);
+            for (RoleEntity roleEntity : foundUser.getRoles()) {
+                if (roleEntity.getName().equals(Role.ADMIN.name())) {
+                    responseModel.setAdmin(true);
+                    break;
+                }
+            }
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set(HttpHeaders.AUTHORIZATION, token);
+            return ResponseEntity.ok()
+                    .headers(responseHeaders)
+                    .body(responseModel);
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid user email");
         }
     }
 }
