@@ -117,8 +117,7 @@ public class AuthenticationController {
     @PostMapping("/token-update")
     public ResponseEntity updateToken(@RequestBody  AuthRequestModel requestDto) {
         try {
-            int userId = Integer.parseInt(requestDto.getPassword());
-            UserDomain user = userService.findUserById(userId);
+            UserDomain user = userService.findUserByEmail(requestDto.getEmail());
             UserEntity foundUser = modelMapper.map(user, UserEntity.class);
             AuthResponseModel responseModel = new AuthResponseModel();
             responseModel.setEmail(foundUser.getEmail());
