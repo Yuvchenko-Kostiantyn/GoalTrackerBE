@@ -1,7 +1,7 @@
 package com.epam.goalTracker.exceptions;
 
 /**
- * User not found exception
+ * Global badge not found exception
  *
  * @author Fazliddin Makhsudov
  */
