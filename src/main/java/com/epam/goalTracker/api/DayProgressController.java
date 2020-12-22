@@ -41,19 +41,7 @@ public class DayProgressController {
     public ResponseEntity create(@RequestBody DayProgressRequestModel requestDto) {
 
         DayProgressDomain dayProgressDomain = modelMapper.map(requestDto, DayProgressDomain.class);
-//        System.out.println(isFinished(dayProgressDomain));
-//        DayProgressDomain createdDayProgressDomain =
-//                dayProgressService.createDayProgressDto(requestDto.getPersonalGoalId(), dayProgressDomain);
-
-        // Todo 1. countAllDayProgeressesOfPersonalGoal(persgoalId) -> long dayCounts
-        // 2. === days field of global goal => change status, criteria exception
-        // 3. === dayCounts => rewarding
-        // 3.1. getAllBadges(userId, personalGoalId) => list of personal badges
-        // 3.2 contain ^ list of globalBadges => allowed badges
-        // 3.3 dayCounts ==== allowed badges
-
         dayProgressService.createDayProgressDto(requestDto.getPersonalGoalid(), dayProgressDomain);
-
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

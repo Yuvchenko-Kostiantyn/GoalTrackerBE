@@ -47,6 +47,11 @@ public class AppExceptionHandler {
         ErrorMessage errorMessage = new ErrorMessage(new Date(), exception.getMessage());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(value = {DayProgressFinishedGoalException.class})
+    public ResponseEntity<Object> handleDayProgressFinishedGoalException(DayProgressFinishedGoalException exception) {
+        ErrorMessage errorMessage = new ErrorMessage(new Date(), exception.getMessage());
+        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.CONFLICT);
+    }
 
     @ExceptionHandler(value = {UserServiceException.class, BadCredentialsException.class})
     public ResponseEntity<Object> handleUserServiceException(RuntimeException exception) {
