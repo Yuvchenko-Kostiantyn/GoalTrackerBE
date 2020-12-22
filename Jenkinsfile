@@ -15,7 +15,7 @@ pipeline {
    stages {  
       stage('Clone'){
           steps{  
-              git branch: 'dev',
+              git branch: 'master',
                 credentialsId: 'GitHub2',
                 url: 'git@github.com:Yuvchenko-Kostiantyn/GoalTrackerBE.git'
           }
